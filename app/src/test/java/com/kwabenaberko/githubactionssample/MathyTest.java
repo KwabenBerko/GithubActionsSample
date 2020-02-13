@@ -23,7 +23,7 @@ public class MathyTest {
 
     @Test
     public void add(){
-        assertEquals(10, mathy.add(5, 8));
+        assertEquals(13, mathy.add(5, 8));
     }
 
 }
