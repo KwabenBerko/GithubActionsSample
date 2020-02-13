@@ -45,4 +45,7 @@ jobs:
           api-level: 21
           script: ./gradlew connectedAndroidTest
 
+  codeCoverage:
+    name: Run Code Coverage Tests
+
 
