@@ -26,4 +26,9 @@ public class MathyTest {
         assertEquals(13, mathy.add(5, 8));
     }
 
+    @Test
+    public void subtract(){
+        assertEquals(10, mathy.subtract(30, 20));
+    }
+
 }
