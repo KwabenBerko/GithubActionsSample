@@ -63,6 +63,7 @@ jobs:
 
       - name: Publish Code Coverage To Code Climat
         run: |
+          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter \
