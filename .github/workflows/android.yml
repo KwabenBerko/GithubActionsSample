@@ -65,5 +65,6 @@ jobs:
         uses: aktions/codeclimate-test-reporter@v1
         with:
           codeclimate-test-reporter-id: 0762e2e0f516de5ebe1df0f0c628dcf26ea02008e766aed8ba7d1001aa442410
-          command: after-build --coverage-input-type jacoco ../../../build/reports/jacoco/**/*.xml
+          command: JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter \
+            format-coverage target/site/jacoco/jacoco.xml\ --input-type jacoco ./cc-test-reporter upload-coverage
 
