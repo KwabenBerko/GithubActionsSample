@@ -40,18 +40,9 @@ jobs:
         with:
           java-version: 1.8
       - name: Instrumentation Tests
-        run: |
-          chmod +x ./scripts/android-wait-for-emulator.sh
-          chmod +x ./scripts/stop-emulators.sh
-          sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-16;default;armeabi-v7a" -c 100M --force
-          emulator -avd test -no-audio -no-window &
-          ./scripts/android-wait-for-emulator.sh
-          adb devices
-          adb shell settings put global window_animation_scale 0 &
-          adb shell settings put global transition_animation_scale 0 &
-          adb shell settings put global animator_duration_scale 0 &
-          adb shell input keyevent 82 &
-          ./gradlew connectedAndroidTest
-          ./scripts/stop-emulators.sh
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 21
+          script: ./gradlew connectedAndroidTest
 
 
