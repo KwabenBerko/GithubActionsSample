@@ -62,7 +62,7 @@ jobs:
           script: ./gradlew jacocoTestCoverageVerification
 
       - name: Publish Code Coverage To Code Climate
-        uses: paambaati/codeclimate-action@v2.4.0
+        uses: paambaati/codeclimate-action@v2.2.4
         env:
           CC_TEST_REPORTER_ID: 0762e2e0f516de5ebe1df0f0c628dcf26ea02008e766aed8ba7d1001aa442410
         with:
