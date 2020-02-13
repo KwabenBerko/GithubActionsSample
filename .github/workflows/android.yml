@@ -64,7 +64,7 @@ jobs:
       - name: Publish Code Coverage To Code Climate
         run: |
           export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64  > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter upload-coverage
 
