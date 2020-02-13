@@ -61,13 +61,16 @@ jobs:
           api-level: 21
           script: ./gradlew jacocoTestCoverageVerification
 
-      - name: Publish Code Coverage To Code Climat
-        run: |
-          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter \
-            format-coverage target/site/jacoco/jacoco.xml     \
-            --input-type jacoco
-          ./cc-test-reporter upload-coverage
+      - name: Publish Code Coverage To Code Climate
+        uses: paambaati/codeclimate-action@v2.4.0
+        env:
+          CC_TEST_REPORTER_ID: 0762e2e0f516de5ebe1df0f0c628dcf26ea02008e766aed8ba7d1001aa442410
+        with:
+          coverageCommand: JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter \format-coverage target/site/jacoco/jacoco.xml\ --input-type jacoco ./cc-test-reporter upload-coverage
+          debug: true
+#        run: |
+#          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+#          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+#          chmod +x ./cc-test-reporter
+#          JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter \format-coverage target/site/jacoco/jacoco.xml\ --input-type jacoco ./cc-test-reporter upload-coverage
 
