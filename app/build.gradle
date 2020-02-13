@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 29
@@ -15,6 +16,53 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: "jacocoTestReport") {
+
+    buildDir = "../app/build"
+    def coverageSourceDirs = [
+            "src/main/java"
+    ]
+    def fileFilter = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/*$ViewInjector*.*',
+            '**/*$ViewBinder*.*',
+            '**/BuildConfig.*',
+            '**/Manifest*.*'
+    ]
+    def javaClasses = fileTree(
+            dir: "${buildDir}/intermediates/javac/debug",
+            excludes: fileFilter
+    )
+
+    classDirectories = files([ javaClasses ])
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code_coverage/debugAndroidTest/connected/*.ec",
+            "output/code_coverage/connected/*.ec"
+    ])
+
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
         }
     }
 }
