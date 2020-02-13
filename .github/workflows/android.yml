@@ -47,5 +47,19 @@ jobs:
 
   codeCoverage:
     name: Run Code Coverage Tests
+    runs-on: macOS-10.14
+
+      steps:
+        - uses: actions/checkout@v2
+        - name: set up JDK 1.8
+          uses: actions/setup-java@v1
+          with:
+            java-version: 1.8
+        - name: Code Coverage Tests
+          uses: reactivecircus/android-emulator-runner@v2
+          with:
+            api-level: 21
+            script: |
+              ./gradlew jacocoTestCoverageVerification
 
 
