@@ -67,6 +67,10 @@ jobs:
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-darwin-amd64  > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
+          ./cc-test-reporter format-coverage -d -t jacoco ./app/build/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml
+          ./cc-test-reporter upload-coverage
+        env:
+          CC_TEST_REPORTER_ID: 0762e2e0f516de5ebe1df0f0c628dcf26ea02008e766aed8ba7d1001aa442410
 
 #        uses: paambaati/codeclimate-action@v2.4.0
 #        env:
