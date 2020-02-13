@@ -61,9 +61,12 @@ jobs:
           api-level: 21
           script: ./gradlew jacocoTestCoverageVerification
 
-      - name: Publish Code Coverage To Code Climate
-        uses: aktions/codeclimate-test-reporter@v1
-        with:
-          codeclimate-test-reporter-id: 0762e2e0f516de5ebe1df0f0c628dcf26ea02008e766aed8ba7d1001aa442410
-          command: after-build --coverage-input-type jacoco target/site/jacoco/jacoco.xml
+      - name: Publish Code Coverage To Code Climat
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter \
+            format-coverage target/site/jacoco/jacoco.xml     \
+            --input-type jacoco
+          ./cc-test-reporter upload-coverage
 
