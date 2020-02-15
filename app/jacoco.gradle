@@ -53,7 +53,7 @@ task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn:
     }
 }
 
-task copyJacocoFileToRoot(type: Copy) {
+task copyJacocoXMLFileToRoot(type: Copy) {
     from 'build/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml'
     into '../'
     rename { String fileName ->
@@ -61,3 +61,7 @@ task copyJacocoFileToRoot(type: Copy) {
     }
     filter { line -> line.replaceAll("com/", "app/src/main/java/com/") }
 }
+
+
+
+jacocoTestCoverageVerification.finalizedBy copyJacocoXMLFileToRoot
