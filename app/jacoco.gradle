@@ -1,0 +1,67 @@
+apply plugin: 'jacoco-android'
+
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+jacocoAndroidUnitTestReport {
+    csv.enabled false
+    html.enabled true
+    xml.enabled true
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: "jacocoTestReport") {
+
+    buildDir = "../app/build"
+    def coverageSourceDirs = [
+            "src/main/java"
+    ]
+    def fileFilter = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/*$ViewInjector*.*',
+            '**/*$ViewBinder*.*',
+            '**/BuildConfig.*',
+            '**/Manifest*.*'
+    ]
+    def javaClasses = fileTree(
+            dir: "${buildDir}/intermediates/javac/debug",
+            excludes: fileFilter
+    )
+
+    classDirectories = files([ javaClasses ])
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code_coverage/debugAndroidTest/connected/*.ec",
+            "output/code_coverage/connected/*.ec"
+    ])
+
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+    }
+}
+
+task copyJacocoXMLFileToRoot(type: Copy) {
+    from 'build/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml'
+    into '../'
+    rename { String fileName ->
+        fileName.replace("jacocoTestDebugUnitTestReport.xml", "jacoco.xml")
+    }
+    filter { line -> line.replaceAll("com/", "app/src/main/java/com/") }
+}
+
+
+
+jacocoTestCoverageVerification.finalizedBy copyJacocoXMLFileToRoot
