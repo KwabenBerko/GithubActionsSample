@@ -1,6 +1,7 @@
 apply plugin: 'jacoco-android'
 
 
+
 jacoco {
     toolVersion = "0.8.4"
 }
@@ -18,6 +19,7 @@ tasks.withType(Test) {
 task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn: "jacocoTestReport") {
 
     buildDir = "../app/build"
+
     def coverageSourceDirs = [
             "src/main/java"
     ]
@@ -54,12 +56,16 @@ task jacocoTestCoverageVerification(type: JacocoCoverageVerification, dependsOn:
 }
 
 task copyJacocoXMLFileToRoot(type: Copy) {
-    from 'build/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml'
+    from "build/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml"
     into '../'
     rename { String fileName ->
         fileName.replace("jacocoTestDebugUnitTestReport.xml", "jacoco.xml")
     }
     filter { line -> line.replaceAll("com/", "app/src/main/java/com/") }
+}
+
+task deleteJacocoXMLFile(type: Delete){
+    delete file("${rootDir}/jacoco.xml")
 }
 
 
